@@ -36,39 +36,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.db = void 0;
+const mysql2_1 = __importDefault(require("mysql2"));
 const dotenv = __importStar(require("dotenv"));
-const express_1 = __importDefault(require("express"));
-const bodyParser = __importStar(require("body-parser"));
-const estudianteRouter_1 = require("./routes/estudianteRouter");
-const profesorRouter_1 = require("./routes/profesorRouter");
-const asignaturaRouter_1 = require("./routes/asignaturaRouter");
-const imparteRouter_1 = require("./routes/imparteRouter");
-const db_1 = require("./db");
-const cors_1 = __importDefault(require("cors"));
-const app = (0, express_1.default)();
 dotenv.config();
-app.use((0, cors_1.default)());
-app.use(bodyParser.json());
-app.get('/', (req, res) => {
-    res.type('text/plain');
-    res.status(200).send('Welcome!');
-});
-app.use('/estudiantes', estudianteRouter_1.estudianteRouter);
-app.use('/profesor', profesorRouter_1.profesorRouter);
-app.use('/asignatura', asignaturaRouter_1.asignaturaRouter);
-app.use('/imparte', imparteRouter_1.imparteRouter);
-db_1.db.connect((err) => {
-    if (err) {
-        console.log('Database connection error');
-    }
-    else {
-        console.log('Database Connected');
-    }
-});
-app.use((req, res) => {
-    res.status(404).send({ error: 'Not Found', message: 'URL not found' });
-});
-app.listen(process.env.PORT, () => {
-    console.log('Node server started running');
-    console.log(`Go to http://${process.env.HOST}:${process.env.PORT}`);
+exports.db = mysql2_1.default.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });

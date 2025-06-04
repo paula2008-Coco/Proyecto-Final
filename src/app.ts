@@ -1,7 +1,12 @@
 import * as dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import * as bodyParser from 'body-parser';
-import { estudianteRouter } from './src/routes/estudianteRouter'; // Rutas
+import { estudianteRouter } from './routes/estudianteRouter'; 
+import { profesorRouter } from './routes/profesorRouter';
+import { asignaturaRouter } from './routes/asignaturaRouter';
+import { imparteRouter} from './routes/imparteRouter';
+
+
 import { db } from './db';
 import cors from 'cors';
  
@@ -17,6 +22,10 @@ app.get('/', (req, res) => {
 });
 
 app.use('/estudiantes', estudianteRouter);
+app.use('/profesor', profesorRouter);
+app.use('/asignatura', asignaturaRouter);
+app.use('/imparte', imparteRouter);
+
  
 db.connect((err) => {
     if (err) {
