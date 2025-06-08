@@ -5,7 +5,7 @@ import { OkPacket, RowDataPacket } from 'mysql2';
 //Crear una inscripción
 export const create = (inscribe: Inscribe, callback: Function) => {
     const queryString = `
-      INSERT INTO inscribe (cod_e, cod_a, cod_p, grupo, nota1, nota2, nota3) 
+      INSERT INTO inscribe (cod_e, cod_a, cod_p, grupo, n1, n2, n3) 
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
@@ -16,9 +16,9 @@ export const create = (inscribe: Inscribe, callback: Function) => {
           inscribe.cod_a,
           inscribe.cod_p,
           inscribe.grupo,
-          inscribe.nota1,
-          inscribe.nota2,
-          inscribe.nota3
+          inscribe.n1,
+          inscribe.n2,
+          inscribe.n3
         ],
         (err) => {
             if (err) { callback(err); return; }
@@ -74,7 +74,7 @@ export const getById = (cod_e: number, cod_a: number, cod_p: number, callback: F
 export const update = (cod_e: number, cod_a: number, cod_p: number, updatedInscribe: Inscribe, callback: Function) => {
     const queryString = `
         UPDATE inscribe
-        SET grupo = ?, nota1 = ?, nota2 = ?, nota3 = ?
+        SET grupo = ?, n1 = ?, n2 = ?, n3 = ?
         WHERE cod_e = ? AND cod_a = ? AND cod_p = ?
     `;
 
@@ -82,9 +82,9 @@ export const update = (cod_e: number, cod_a: number, cod_p: number, updatedInscr
         queryString,
         [
             updatedInscribe.grupo,
-            updatedInscribe.nota1,
-            updatedInscribe.nota2,
-            updatedInscribe.nota3,
+            updatedInscribe.n1,
+            updatedInscribe.n2,
+            updatedInscribe.n3,
             cod_e,
             cod_a,
             cod_p

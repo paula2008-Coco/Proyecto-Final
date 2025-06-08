@@ -32,15 +32,6 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -48,52 +39,59 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.estudianteRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const estudianteController = __importStar(require("../controllers/estudianteController"));
-const estudianteRouter = express_1.default.Router();
-exports.estudianteRouter = estudianteRouter;
-// Enviar un nuevo estudiante
-estudianteRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newEstudiante = req.body;
-    estudianteController.create(newEstudiante, (err, result) => {
-        if (err) {
-            return res.status(500).json({ 'message': err.message });
-        }
+exports.estudianteRouter = express_1.default.Router();
+// Crear un nuevo estudiante
+exports.estudianteRouter.post('/', (req, res) => {
+    const nuevoEstudiante = req.body;
+    estudianteController.create(nuevoEstudiante, (err, result) => {
+        if (err)
+            return res.status(500).json({ error: err.message });
         res.status(result.statusCode).json(result);
     });
-}));
+});
 // Obtener todos los estudiantes
-estudianteRouter.get('/', (req, res) => {
+exports.estudianteRouter.get('/', (req, res) => {
     estudianteController.getAll((err, result) => {
         if (err)
             return res.status(500).json({ error: err.message });
-        res.json(result);
+        res.status(result.statusCode).json(result);
     });
 });
 // Obtener estudiante por ID
-estudianteRouter.get('/:id', (req, res) => {
+exports.estudianteRouter.get('/:id', (req, res) => {
     const id = parseInt(req.params.id);
     estudianteController.getById(id, (err, result) => {
         if (err)
             return res.status(404).json({ error: err.message });
-        res.json(result);
+        res.status(result.statusCode).json(result);
     });
 });
-// Actualizar estudiante por id
-estudianteRouter.put('/:id', (req, res) => {
+// Actualizar estudiante por ID
+exports.estudianteRouter.put('/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const estudianteActualizado = req.body;
-    estudianteController.update(id, estudianteActualizado, (err, result) => {
+    const updatedEstudiante = req.body;
+    estudianteController.update(id, updatedEstudiante, (err, result) => {
         if (err)
             return res.status(500).json({ error: err.message });
-        res.json(result);
+        res.status(result.statusCode).json(result);
     });
 });
-// Eliminar estudiante
-estudianteRouter.delete('/:id', (req, res) => {
+// Actualizar cod_e (clave primaria) de un estudiante
+exports.estudianteRouter.put('/actualizar-id/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const estudiante = req.body;
+    estudianteController.updateById(id, estudiante, (err, result) => {
+        if (err)
+            return res.status(500).json({ error: err.message });
+        res.status(result.statusCode).json(result);
+    });
+});
+// Eliminar estudiante por ID
+exports.estudianteRouter.delete('/:id', (req, res) => {
     const id = parseInt(req.params.id);
     estudianteController.deleteById(id, (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: err.message });
-        }
+        if (err)
+            return res.status(404).json({ error: err.message });
         res.status(result.statusCode).json(result);
     });
 });

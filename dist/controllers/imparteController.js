@@ -16,7 +16,7 @@ const create = (imparte, callback) => {
     });
 };
 exports.create = create;
-// Obtener todas las relaciones
+// Obtener todas las relaciones imparte
 const getAll = (callback) => {
     const query = 'SELECT * FROM imparte';
     db_1.db.query(query, (err, result) => {
@@ -29,7 +29,7 @@ const getAll = (callback) => {
     });
 };
 exports.getAll = getAll;
-// Obtener relación por ID compuesta
+// Obtener relación imparte por id_p y cod_a (clave compuesta)
 const getById = (id_p, cod_a, callback) => {
     const query = 'SELECT * FROM imparte WHERE id_p = ? AND cod_a = ?';
     db_1.db.query(query, [id_p, cod_a], (err, result) => {
@@ -45,7 +45,7 @@ const getById = (id_p, cod_a, callback) => {
     });
 };
 exports.getById = getById;
-// Actualizar grupo y horario
+// Actualizar grupo y horario de la relación imparte
 const update = (id_p, cod_a, updated, callback) => {
     const query = 'UPDATE imparte SET grupo = ?, horario = ? WHERE id_p = ? AND cod_a = ?';
     db_1.db.query(query, [updated.grupo, updated.horario, id_p, cod_a], (err, result) => {
@@ -58,7 +58,7 @@ const update = (id_p, cod_a, updated, callback) => {
     });
 };
 exports.update = update;
-// Eliminar relación
+// Eliminar relación imparte por id_p y cod_a
 const deleteById = (id_p, cod_a, callback) => {
     const query = 'DELETE FROM imparte WHERE id_p = ? AND cod_a = ?';
     db_1.db.query(query, [id_p, cod_a], (err, result) => {
@@ -74,14 +74,14 @@ const deleteById = (id_p, cod_a, callback) => {
     });
 };
 exports.deleteById = deleteById;
-//Ver asignaturas que imparte un profesor 
+// Ver asignaturas que imparte un profesor
 const getAsignaturasPorProfesor = (id_p, callback) => {
     const query = `
-    SELECT a.cod_a, a.nom_a, i.grupo, i.horario
-    FROM imparte i
-    JOIN asignatura a ON i.cod_a = a.cod_a
-    WHERE i.id_p = ?
-  `;
+        SELECT a.cod_a, a.nom_a, i.grupo, i.horario
+        FROM imparte i
+        JOIN asignatura a ON i.cod_a = a.cod_a
+        WHERE i.id_p = ?
+    `;
     db_1.db.query(query, [id_p], (err, result) => {
         if (err)
             return callback(err);
@@ -92,14 +92,14 @@ const getAsignaturasPorProfesor = (id_p, callback) => {
     });
 };
 exports.getAsignaturasPorProfesor = getAsignaturasPorProfesor;
-//Ver profesores que imparten asignatura
+// Ver profesores que imparten una asignatura
 const getProfesoresPorAsignatura = (cod_a, callback) => {
     const query = `
-    SELECT p.cod_p, p.nom_p, i.grupo, i.horario
-    FROM imparte i
-    JOIN profesor p ON i.id_p = p.cod_p
-    WHERE i.cod_a = ?
-  `;
+        SELECT p.cod_p, p.nom_p, i.grupo, i.horario
+        FROM imparte i
+        JOIN profesor p ON i.id_p = p.cod_p
+        WHERE i.cod_a = ?
+    `;
     db_1.db.query(query, [cod_a], (err, result) => {
         if (err)
             return callback(err);

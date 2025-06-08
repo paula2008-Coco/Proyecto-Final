@@ -32,15 +32,6 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -48,52 +39,59 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.asignaturaRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const asignaturaController = __importStar(require("../controllers/asignaturaController"));
-const asignaturaRouter = express_1.default.Router();
-exports.asignaturaRouter = asignaturaRouter;
-//Enviar una nueva asignatura
-asignaturaRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newAsignatura = req.body;
-    asignaturaController.create(newAsignatura, (err, result) => {
-        if (err) {
-            return res.status(500).json({ 'message': err.message });
-        }
-        res.status(result.statusCode).json(result);
-    });
-}));
-// Obtener todas las asignaturas
-asignaturaRouter.get('/', (req, res) => {
-    asignaturaController.getAll((err, result) => {
+exports.asignaturaRouter = express_1.default.Router();
+// Crear una nueva asignatura
+exports.asignaturaRouter.post('/', (req, res) => {
+    const nuevaAsignatura = req.body;
+    asignaturaController.createAsignatura(nuevaAsignatura, (err, result) => {
         if (err)
             return res.status(500).json({ error: err.message });
-        res.json(result);
+        res.status(result.statusCode).json(result);
+    });
+});
+// Obtener todas las asignaturas
+exports.asignaturaRouter.get('/', (req, res) => {
+    asignaturaController.getAllAsignaturas((err, result) => {
+        if (err)
+            return res.status(500).json({ error: err.message });
+        res.status(result.statusCode).json(result);
     });
 });
 // Obtener asignatura por ID
-asignaturaRouter.get('/:id', (req, res) => {
+exports.asignaturaRouter.get('/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    asignaturaController.getById(id, (err, result) => {
+    asignaturaController.getAsignaturaById(id, (err, result) => {
         if (err)
             return res.status(404).json({ error: err.message });
-        res.json(result);
+        res.status(result.statusCode).json(result);
     });
 });
 // Actualizar asignatura por ID
-asignaturaRouter.put('/:id', (req, res) => {
+exports.asignaturaRouter.put('/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const asignaturaActualizada = req.body;
-    asignaturaController.update(id, asignaturaActualizada, (err, result) => {
+    const updatedAsignatura = req.body;
+    asignaturaController.updateAsignatura(id, updatedAsignatura, (err, result) => {
         if (err)
             return res.status(500).json({ error: err.message });
-        res.json(result);
+        res.status(result.statusCode).json(result);
+    });
+});
+// Actualizar cod_a (clave primaria) de una asignatura
+exports.asignaturaRouter.put('/actualizar-id/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const asignatura = req.body;
+    asignaturaController.updateAsignaturaById(id, asignatura, (err, result) => {
+        if (err)
+            return res.status(500).json({ error: err.message });
+        res.status(result.statusCode).json(result);
     });
 });
 // Eliminar asignatura por ID
-asignaturaRouter.delete('/:id', (req, res) => {
+exports.asignaturaRouter.delete('/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    asignaturaController.deleteById(id, (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: err.message });
-        }
+    asignaturaController.deleteAsignaturaById(id, (err, result) => {
+        if (err)
+            return res.status(404).json({ error: err.message });
         res.status(result.statusCode).json(result);
     });
 });

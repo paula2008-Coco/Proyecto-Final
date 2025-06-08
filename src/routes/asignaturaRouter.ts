@@ -1,44 +1,56 @@
 import express, { Request, Response } from 'express';
 import * as asignaturaController from '../controllers/asignaturaController';
-import { Asignatura } from '../models/asignaturaModel';
-const asignaturaRouter = express.Router();
+import { Asignaturas } from '../models/asignaturaModel';
 
-//Enviar una nueva asignatura
-asignaturaRouter.post('/', async (req: Request, res: Response) => {
-    const newAsignatura: Asignatura = req.body;
-    asignaturaController.create(newAsignatura, (err: Error, result: any) => {
-        if (err) {
-            return res.status(500).json({ 'message': err.message });
-        }
+export const asignaturaRouter = express.Router();
 
-        res.status(result.statusCode).json(result);
-    });
+// Crear una nueva asignatura
+asignaturaRouter.post('/', (req: Request, res: Response) => {
+  const nuevaAsignatura: Asignaturas = req.body;
+
+  asignaturaController.createAsignatura(nuevaAsignatura, (err: any, result: any) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(result.statusCode).json(result);
+  });
 });
 
 // Obtener todas las asignaturas
 asignaturaRouter.get('/', (req: Request, res: Response) => {
-  asignaturaController.getAll((err: Error, result: any) => {
+  asignaturaController.getAllAsignaturas((err: any, result: any) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json(result);
+    res.status(result.statusCode).json(result);
   });
 });
 
 // Obtener asignatura por ID
 asignaturaRouter.get('/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
-  asignaturaController.getById(id, (err: Error, result: any) => {
+
+  asignaturaController.getAsignaturaById(id, (err: any, result: any) => {
     if (err) return res.status(404).json({ error: err.message });
-    res.json(result);
+    res.status(result.statusCode).json(result);
   });
 });
 
 // Actualizar asignatura por ID
 asignaturaRouter.put('/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
-  const asignaturaActualizada = req.body;
-  asignaturaController.update(id, asignaturaActualizada, (err: Error, result: any) => {
+  const updatedAsignatura: Asignaturas = req.body;
+
+  asignaturaController.updateAsignatura(id, updatedAsignatura, (err: any, result: any) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json(result);
+    res.status(result.statusCode).json(result);
+  });
+});
+
+// Actualizar cod_a (clave primaria) de una asignatura
+asignaturaRouter.put('/actualizar-id/:id', (req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+  const asignatura: Asignaturas = req.body;
+
+  asignaturaController.updateAsignaturaById(id, asignatura, (err: any, result: any) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(result.statusCode).json(result);
   });
 });
 
@@ -46,19 +58,9 @@ asignaturaRouter.put('/:id', (req: Request, res: Response) => {
 asignaturaRouter.delete('/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
 
-  asignaturaController.deleteById(id, (err: any, result: any) => {
-    if (err) {
-      return res.status(500).json({ message: err.message });
-    }
-
+  asignaturaController.deleteAsignaturaById(id, (err: any, result: any) => {
+    if (err) return res.status(404).json({ error: err.message });
     res.status(result.statusCode).json(result);
   });
 });
-
-
-export { asignaturaRouter };
-
-
-
-
 

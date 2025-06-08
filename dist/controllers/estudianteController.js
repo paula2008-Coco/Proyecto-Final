@@ -2,15 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteById = exports.updateById = exports.update = exports.getById = exports.getAll = exports.create = void 0;
 const db_1 = require("../db");
-//Crear un estudiante
+// Crear un estudiante
 const create = (estudiante, callback) => {
-    const queryString = 'INSERT INTO estudiantes (cod_e, nom_e, dir_e, tel_e, fech_nac) VALUES (?, ?, ?, ?, ?)';
+    const queryString = 'INSERT INTO Estudiante (cod_e, nom_e, dir_e, tel_e, fech_nac) VALUES (?, ?, ?, ?, ?)';
     db_1.db.query(queryString, [estudiante.cod_e, estudiante.nom_e, estudiante.dir_e, estudiante.tel_e, estudiante.fech_nac], (err) => {
-        if (err) {
-            callback(err);
-        }
-        //const insertId = (<OkPacket>result).insertId;
-        //callback(null, insertId);
+        if (err)
+            return callback(err);
         callback(null, {
             statusCode: 201,
             message: 'Estudiante creado exitosamente',
@@ -21,9 +18,9 @@ const create = (estudiante, callback) => {
     });
 };
 exports.create = create;
-//Obtener todos los estudiantes
+// Obtener todos los estudiantes
 const getAll = (callback) => {
-    const queryString = 'SELECT * FROM estudiantes';
+    const queryString = 'SELECT * FROM Estudiante';
     db_1.db.query(queryString, (err, result) => {
         if (err)
             return callback(err);
@@ -34,9 +31,9 @@ const getAll = (callback) => {
     });
 };
 exports.getAll = getAll;
-//Obtener estudiante por ID
+// Obtener estudiante por ID
 const getById = (id, callback) => {
-    const queryString = 'SELECT * FROM estudiantes WHERE cod_e = ?';
+    const queryString = 'SELECT * FROM Estudiante WHERE cod_e = ?';
     db_1.db.query(queryString, [id], (err, result) => {
         if (err)
             return callback(err);
@@ -50,10 +47,10 @@ const getById = (id, callback) => {
     });
 };
 exports.getById = getById;
-//Actualizar estudiante
+// Actualizar estudiante
 const update = (id, updatedEstudiante, callback) => {
     const queryString = `
-        UPDATE estudiantes
+        UPDATE Estudiante
         SET nom_e = ?, dir_e = ?, tel_e = ?, fech_nac = ?
         WHERE cod_e = ?
     `;
@@ -73,13 +70,23 @@ const update = (id, updatedEstudiante, callback) => {
     });
 };
 exports.update = update;
-//Actualizar estudiante por ID
-const updateById = (code_e, estudiante, callback) => {
-    const queryString = 'UPDATE estudiantes SET cod_e = ?, nom_e = ?, dir_e = ?, tel_e = ?, fech_nac = ? WHERE cod_e = ?';
-    db_1.db.query(queryString, [estudiante.cod_e, estudiante.nom_e, estudiante.dir_e, estudiante.tel_e, estudiante.fech_nac, code_e], (err, result) => {
-        if (err) {
-            callback(err);
-        }
+// Actualizar estudiante por ID (incluyendo cod_e)
+const updateById = (cod_e, estudiante, callback) => {
+    const queryString = `
+        UPDATE Estudiante
+        SET cod_e = ?, nom_e = ?, dir_e = ?, tel_e = ?, fech_nac = ?
+        WHERE cod_e = ?
+    `;
+    db_1.db.query(queryString, [
+        estudiante.cod_e,
+        estudiante.nom_e,
+        estudiante.dir_e,
+        estudiante.tel_e,
+        estudiante.fech_nac,
+        cod_e
+    ], (err, result) => {
+        if (err)
+            return callback(err);
         callback(null, {
             statusCode: 200,
             message: 'Estudiante actualizado exitosamente'
@@ -87,13 +94,12 @@ const updateById = (code_e, estudiante, callback) => {
     });
 };
 exports.updateById = updateById;
-//Eliminar estudiante por ID
+// Eliminar estudiante por ID
 const deleteById = (id, callback) => {
-    const queryString = 'DELETE FROM estudiantes WHERE cod_e = ?';
+    const queryString = 'DELETE FROM Estudiante WHERE cod_e = ?';
     db_1.db.query(queryString, [id], (err, result) => {
-        if (err) {
+        if (err)
             return callback(err);
-        }
         if (result.affectedRows === 0) {
             return callback(new Error('Estudiante no encontrado'));
         }

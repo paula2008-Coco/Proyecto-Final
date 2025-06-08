@@ -32,15 +32,6 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -48,52 +39,59 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.profesorRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const profesorController = __importStar(require("../controllers/profesorController"));
-const profesorRouter = express_1.default.Router();
-exports.profesorRouter = profesorRouter;
-//Enviar todos los profesores
-profesorRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newProfesor = req.body;
-    profesorController.create(newProfesor, (err, result) => {
-        if (err) {
-            return res.status(500).json({ 'message': err.message });
-        }
+exports.profesorRouter = express_1.default.Router();
+// Crear un nuevo profesor
+exports.profesorRouter.post('/', (req, res) => {
+    const nuevoProfesor = req.body;
+    profesorController.create(nuevoProfesor, (err, result) => {
+        if (err)
+            return res.status(500).json({ error: err.message });
         res.status(result.statusCode).json(result);
     });
-}));
+});
 // Obtener todos los profesores
-profesorRouter.get('/', (req, res) => {
+exports.profesorRouter.get('/', (req, res) => {
     profesorController.getAll((err, result) => {
         if (err)
             return res.status(500).json({ error: err.message });
-        res.json(result);
+        res.status(result.statusCode).json(result);
     });
 });
-// Obtener profesor por ID
-profesorRouter.get('/:id', (req, res) => {
+// Obtener un profesor por ID
+exports.profesorRouter.get('/:id', (req, res) => {
     const id = parseInt(req.params.id);
     profesorController.getById(id, (err, result) => {
         if (err)
             return res.status(404).json({ error: err.message });
-        res.json(result);
+        res.status(result.statusCode).json(result);
     });
 });
-// Actualizar profesor por ID 
-profesorRouter.put('/:id', (req, res) => {
+// Actualizar un profesor por ID
+exports.profesorRouter.put('/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const profesorActualizado = req.body;
     profesorController.update(id, profesorActualizado, (err, result) => {
         if (err)
             return res.status(500).json({ error: err.message });
-        res.json(result);
+        res.status(result.statusCode).json(result);
     });
 });
-// Eliminar profesor
-profesorRouter.delete('/:id', (req, res) => {
+// Actualizar cod_p (clave primaria) de un profesor
+exports.profesorRouter.put('/actualizar-id/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const profesor = req.body;
+    profesorController.updateById(id, profesor, (err, result) => {
+        if (err)
+            return res.status(500).json({ error: err.message });
+        res.status(result.statusCode).json(result);
+    });
+});
+// Eliminar un profesor por ID
+exports.profesorRouter.delete('/:id', (req, res) => {
     const id = parseInt(req.params.id);
     profesorController.deleteById(id, (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: err.message });
-        }
+        if (err)
+            return res.status(404).json({ error: err.message });
         res.status(result.statusCode).json(result);
     });
 });

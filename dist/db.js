@@ -40,9 +40,21 @@ exports.db = void 0;
 const mysql2_1 = __importDefault(require("mysql2"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-exports.db = mysql2_1.default.createConnection({
+exports.db = mysql2_1.default.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    connectionLimit: 10, // máximo conexiones simultáneas
+});
+// Opcional: probar conexión
+exports.db.getConnection((err, connection) => {
+    if (err) {
+        console.error("Error al conectar a la base de datos:", err);
+    }
+    else {
+        console.log("Conectado a la base de datos");
+        if (connection)
+            connection.release(); // liberar la conexión
+    }
 });

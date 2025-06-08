@@ -37,38 +37,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv = __importStar(require("dotenv"));
+dotenv.config();
 const express_1 = __importDefault(require("express"));
 const bodyParser = __importStar(require("body-parser"));
+const cors_1 = __importDefault(require("cors"));
 const estudianteRouter_1 = require("./routes/estudianteRouter");
 const profesorRouter_1 = require("./routes/profesorRouter");
 const asignaturaRouter_1 = require("./routes/asignaturaRouter");
 const imparteRouter_1 = require("./routes/imparteRouter");
-const db_1 = require("./db");
-const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
-dotenv.config();
+const PORT = parseInt(process.env.PORT || '3000');
+const HOST = process.env.HOST || 'localhost';
+// Middleware
 app.use((0, cors_1.default)());
 app.use(bodyParser.json());
+// Ruta raíz
 app.get('/', (req, res) => {
     res.type('text/plain');
     res.status(200).send('Welcome!');
 });
-app.use('/estudiantes', estudianteRouter_1.estudianteRouter);
+// Rutas de API
+app.use('/estudiante', estudianteRouter_1.estudianteRouter);
 app.use('/profesor', profesorRouter_1.profesorRouter);
 app.use('/asignatura', asignaturaRouter_1.asignaturaRouter);
 app.use('/imparte', imparteRouter_1.imparteRouter);
-db_1.db.connect((err) => {
-    if (err) {
-        console.log('Database connection error');
-    }
-    else {
-        console.log('Database Connected');
-    }
-});
+// Ya no usamos db.connect() porque usas createPool() en db.ts
+// Manejo de rutas no encontradas
 app.use((req, res) => {
     res.status(404).send({ error: 'Not Found', message: 'URL not found' });
 });
-app.listen(process.env.PORT, () => {
-    console.log('Node server started running');
-    console.log(`Go to http://${process.env.HOST}:${process.env.PORT}`);
+// Iniciar servidor
+app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://${HOST}:${PORT}`);
 });

@@ -7,7 +7,7 @@
     "start": "tsc && nodemon dist/app.js",
     "dev": "tsc && nodemon app.ts",
     "dev1": "nodemon"
-},
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

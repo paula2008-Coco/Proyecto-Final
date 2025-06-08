@@ -1,4 +1,4 @@
-export interface Profesor {
+export interface Profesores {
     cod_p:number;
     nom_p:string;
     dir_p:string;
@@ -6,4 +6,5 @@ export interface Profesor {
     fech_nac:Date;
     profesion_p:string;
 }
+
 

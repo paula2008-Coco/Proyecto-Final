@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestión de Asignaturas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Gestión de Asignaturas</h1>
+  <a href="index.html">← Volver al Menú</a>
+
+  <form id="asignaturaForm">
+    <h2>Registrar / Editar Asignatura</h2>
+    <label>Código: <input type="number" id="cod_a" required /></label><br />
+    <label>Nombre: <input type="text" id="nom_a" required /></label><br />
+    <label>Créditos: <input type="number" id="credit_a" required /></label><br />
+    <label>Intensidad Horaria: <input type="number" id="inh_a" required /></label><br />
+    <button type="submit">Guardar</button>
+  </form>
+
+  <h2>Lista de Asignaturas</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Código</th><th>Nombre</th><th>Créditos</th><th>Int. Horaria</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tablaAsignaturas"></tbody>
+  </table>
+
+  <script src="js/asignaturas.js"></script>
+</body>
+</html>
