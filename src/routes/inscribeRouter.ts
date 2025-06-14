@@ -6,10 +6,15 @@ export const inscribeRouter = express.Router();
 
 // Crear una inscripción
 inscribeRouter.post('/', (req: Request, res: Response) => {
+    console.log('Body recibido en inscribe:', req.body); // <-- Log para depuración
+
     const nuevaInscripcion: Inscribe = req.body;
 
     inscribeController.create(nuevaInscripcion, (err: any, result: any) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+            console.error('Error al guardar inscripción:', err); // <-- Log de error
+            return res.status(500).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });
@@ -22,11 +27,11 @@ inscribeRouter.get('/', (req: Request, res: Response) => {
     });
 });
 
-// Obtener inscripción por IDs compuestos (cod_e, cod_a, cod_p)
+// Obtener inscripción por IDs compuestos (cod_e, cod_p, cod_a)
 inscribeRouter.get('/:cod_e/:cod_p/:cod_a', (req: Request, res: Response) => {
     const cod_e = parseInt(req.params.cod_e);
-    const cod_p = parseInt(req.params.cod_a);
-    const cod_a = parseInt(req.params.cod_p);
+    const cod_p = parseInt(req.params.cod_p);
+    const cod_a = parseInt(req.params.cod_a);
 
     inscribeController.getById(cod_e, cod_p, cod_a, (err: any, result: any) => {
         if (err) return res.status(404).json({ error: err.message });
@@ -37,8 +42,8 @@ inscribeRouter.get('/:cod_e/:cod_p/:cod_a', (req: Request, res: Response) => {
 // Actualizar inscripción
 inscribeRouter.put('/:cod_e/:cod_p/:cod_a', (req: Request, res: Response) => {
     const cod_e = parseInt(req.params.cod_e);
-    const cod_p = parseInt(req.params.cod_a);
-    const cod_a = parseInt(req.params.cod_p);
+    const cod_p = parseInt(req.params.cod_p);
+    const cod_a = parseInt(req.params.cod_a);
     const updatedInscripcion: Inscribe = req.body;
 
     inscribeController.update(cod_e, cod_p, cod_a, updatedInscripcion, (err: any, result: any) => {
@@ -47,6 +52,7 @@ inscribeRouter.put('/:cod_e/:cod_p/:cod_a', (req: Request, res: Response) => {
     });
 });
 
+/*
 // Eliminar inscripción
 inscribeRouter.delete('/:cod_e/:cod_p/:cod_a', (req: Request, res: Response) => {
     const cod_e = parseInt(req.params.cod_e);
@@ -58,4 +64,5 @@ inscribeRouter.delete('/:cod_e/:cod_p/:cod_a', (req: Request, res: Response) => 
         res.status(result.statusCode).json(result);
     });
 });
+*/
 

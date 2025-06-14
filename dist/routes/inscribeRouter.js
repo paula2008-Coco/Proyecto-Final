@@ -42,10 +42,13 @@ const inscribeController = __importStar(require("../controllers/inscribeControll
 exports.inscribeRouter = express_1.default.Router();
 // Crear una inscripción
 exports.inscribeRouter.post('/', (req, res) => {
+    console.log('Body recibido en inscribe:', req.body); // <-- Log para depuración
     const nuevaInscripcion = req.body;
     inscribeController.create(nuevaInscripcion, (err, result) => {
-        if (err)
+        if (err) {
+            console.error('Error al guardar inscripción:', err); // <-- Log de error
             return res.status(500).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });
@@ -57,37 +60,39 @@ exports.inscribeRouter.get('/', (req, res) => {
         res.status(result.statusCode).json(result);
     });
 });
-// Obtener inscripción por IDs compuestos (cod_e, cod_a, cod_p)
-exports.inscribeRouter.get('/:cod_e/:cod_a/:cod_p', (req, res) => {
+// Obtener inscripción por IDs compuestos (cod_e, cod_p, cod_a)
+exports.inscribeRouter.get('/:cod_e/:cod_p/:cod_a', (req, res) => {
     const cod_e = parseInt(req.params.cod_e);
-    const cod_a = parseInt(req.params.cod_a);
     const cod_p = parseInt(req.params.cod_p);
-    inscribeController.getById(cod_e, cod_a, cod_p, (err, result) => {
+    const cod_a = parseInt(req.params.cod_a);
+    inscribeController.getById(cod_e, cod_p, cod_a, (err, result) => {
         if (err)
             return res.status(404).json({ error: err.message });
         res.status(result.statusCode).json(result);
     });
 });
 // Actualizar inscripción
-exports.inscribeRouter.put('/:cod_e/:cod_a/:cod_p', (req, res) => {
+exports.inscribeRouter.put('/:cod_e/:cod_p/:cod_a', (req, res) => {
     const cod_e = parseInt(req.params.cod_e);
-    const cod_a = parseInt(req.params.cod_a);
     const cod_p = parseInt(req.params.cod_p);
+    const cod_a = parseInt(req.params.cod_a);
     const updatedInscripcion = req.body;
-    inscribeController.update(cod_e, cod_a, cod_p, updatedInscripcion, (err, result) => {
+    inscribeController.update(cod_e, cod_p, cod_a, updatedInscripcion, (err, result) => {
         if (err)
             return res.status(500).json({ error: err.message });
         res.status(result.statusCode).json(result);
     });
 });
+/*
 // Eliminar inscripción
-exports.inscribeRouter.delete('/:cod_e/:cod_a/:cod_p', (req, res) => {
+inscribeRouter.delete('/:cod_e/:cod_p/:cod_a', (req: Request, res: Response) => {
     const cod_e = parseInt(req.params.cod_e);
-    const cod_a = parseInt(req.params.cod_a);
-    const cod_p = parseInt(req.params.cod_p);
-    inscribeController.deleteById(cod_e, cod_a, cod_p, (err, result) => {
-        if (err)
-            return res.status(404).json({ error: err.message });
+    const cod_p = parseInt(req.params.cod_a);
+    const cod_a = parseInt(req.params.cod_p);
+
+    inscribeController.deleteById(cod_e, cod_p, cod_a, (err: any, result: any) => {
+        if (err) return res.status(404).json({ error: err.message });
         res.status(result.statusCode).json(result);
     });
 });
+*/

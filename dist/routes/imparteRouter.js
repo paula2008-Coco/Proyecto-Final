@@ -44,26 +44,32 @@ exports.imparteRouter = express_1.default.Router();
 exports.imparteRouter.post('/', (req, res) => {
     const nuevaRelacion = req.body;
     imparteController.create(nuevaRelacion, (err, result) => {
-        if (err)
+        if (err) {
+            console.error('Error en POST /imparte:', err); // <-- Esto muestra el error en la terminal
             return res.status(500).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });
 // Obtener todas las relaciones imparte
 exports.imparteRouter.get('/', (req, res) => {
     imparteController.getAll((err, result) => {
-        if (err)
+        if (err) {
+            console.error('Error en GET /imparte:', err);
             return res.status(500).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });
-// Obtener relación imparte por id_p y cod_a (usamos query params o params separados)
+// Obtener relación imparte por id_p y cod_a
 exports.imparteRouter.get('/:id_p/:cod_a', (req, res) => {
     const id_p = parseInt(req.params.id_p);
     const cod_a = parseInt(req.params.cod_a);
     imparteController.getById(id_p, cod_a, (err, result) => {
-        if (err)
+        if (err) {
+            console.error('Error en GET /imparte/:id_p/:cod_a:', err);
             return res.status(404).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });
@@ -73,8 +79,10 @@ exports.imparteRouter.put('/:id_p/:cod_a', (req, res) => {
     const cod_a = parseInt(req.params.cod_a);
     const updatedRelacion = req.body;
     imparteController.update(id_p, cod_a, updatedRelacion, (err, result) => {
-        if (err)
+        if (err) {
+            console.error('Error en PUT /imparte/:id_p/:cod_a:', err);
             return res.status(500).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });
@@ -83,8 +91,10 @@ exports.imparteRouter.delete('/:id_p/:cod_a', (req, res) => {
     const id_p = parseInt(req.params.id_p);
     const cod_a = parseInt(req.params.cod_a);
     imparteController.deleteById(id_p, cod_a, (err, result) => {
-        if (err)
+        if (err) {
+            console.error('Error en DELETE /imparte/:id_p/:cod_a:', err);
             return res.status(404).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });
@@ -92,8 +102,10 @@ exports.imparteRouter.delete('/:id_p/:cod_a', (req, res) => {
 exports.imparteRouter.get('/profesor/:id_p/asignaturas', (req, res) => {
     const id_p = parseInt(req.params.id_p);
     imparteController.getAsignaturasPorProfesor(id_p, (err, result) => {
-        if (err)
+        if (err) {
+            console.error('Error en GET /imparte/profesor/:id_p/asignaturas:', err);
             return res.status(500).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });
@@ -101,8 +113,10 @@ exports.imparteRouter.get('/profesor/:id_p/asignaturas', (req, res) => {
 exports.imparteRouter.get('/asignatura/:cod_a/profesores', (req, res) => {
     const cod_a = parseInt(req.params.cod_a);
     imparteController.getProfesoresPorAsignatura(cod_a, (err, result) => {
-        if (err)
+        if (err) {
+            console.error('Error en GET /imparte/asignatura/:cod_a/profesores:', err);
             return res.status(500).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });

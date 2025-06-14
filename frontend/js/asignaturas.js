@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:3000/asignaturas'; 
+const apiUrl = 'http://localhost:3000/asignatura'; 
 
 const form = document.getElementById('asignaturaForm');
 const tabla = document.getElementById('tablaAsignaturas');

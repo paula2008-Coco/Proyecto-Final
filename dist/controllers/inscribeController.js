@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteById = exports.update = exports.getById = exports.getAll = exports.create = void 0;
+exports.update = exports.getById = exports.getAll = exports.create = void 0;
 const db_1 = require("../db");
 //Crear una inscripción
 const create = (inscribe, callback) => {
     const queryString = `
-      INSERT INTO inscribe (cod_e, cod_a, cod_p, grupo, nota1, nota2, nota3) 
+      INSERT INTO inscribe (cod_e, cod_a, cod_p, grupo, n1, n2, n3) 
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
     db_1.db.query(queryString, [
@@ -13,9 +13,9 @@ const create = (inscribe, callback) => {
         inscribe.cod_a,
         inscribe.cod_p,
         inscribe.grupo,
-        inscribe.nota1,
-        inscribe.nota2,
-        inscribe.nota3
+        inscribe.n1,
+        inscribe.n2,
+        inscribe.n3
     ], (err) => {
         if (err) {
             callback(err);
@@ -66,14 +66,14 @@ exports.getById = getById;
 const update = (cod_e, cod_a, cod_p, updatedInscribe, callback) => {
     const queryString = `
         UPDATE inscribe
-        SET grupo = ?, nota1 = ?, nota2 = ?, nota3 = ?
+        SET grupo = ?, n1 = ?, n2 = ?, n3 = ?
         WHERE cod_e = ? AND cod_a = ? AND cod_p = ?
     `;
     db_1.db.query(queryString, [
         updatedInscribe.grupo,
-        updatedInscribe.nota1,
-        updatedInscribe.nota2,
-        updatedInscribe.nota3,
+        updatedInscribe.n1,
+        updatedInscribe.n2,
+        updatedInscribe.n3,
         cod_e,
         cod_a,
         cod_p
@@ -87,19 +87,22 @@ const update = (cod_e, cod_a, cod_p, updatedInscribe, callback) => {
     });
 };
 exports.update = update;
-//Eliminar inscripción por ID
-const deleteById = (cod_e, cod_a, cod_p, callback) => {
-    const queryString = 'DELETE FROM inscribe WHERE cod_e = ? AND cod_a = ? AND cod_p = ?';
-    db_1.db.query(queryString, [cod_e, cod_a, cod_p], (err, result) => {
-        if (err)
-            return callback(err);
-        if (result.affectedRows === 0) {
-            return callback(new Error('Inscripción no encontrada'));
-        }
-        callback(null, {
-            statusCode: 200,
-            message: 'Inscripción eliminada exitosamente'
-        });
-    });
-};
-exports.deleteById = deleteById;
+/*
+ //Eliminar inscripción por ID
+ export const deleteById = (cod_e: number, cod_a: number, cod_p: number, callback: Function) => {
+     const queryString = 'DELETE FROM inscribe WHERE cod_e = ? AND cod_a = ? AND cod_p = ?';
+
+     db.query(queryString, [cod_e, cod_a, cod_p], (err, result) => {
+         if (err) return callback(err);
+
+         if ((result as any).affectedRows === 0) {
+             return callback(new Error('Inscripción no encontrada'));
+         }
+
+         callback(null, {
+             statusCode: 200,
+             message: 'Inscripción eliminada exitosamente'
+         });
+     });
+ };
+*/

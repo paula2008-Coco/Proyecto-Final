@@ -100,20 +100,23 @@ export const update = (cod_e: number, cod_a: number, cod_p: number, updatedInscr
     );
 };
 
-//Eliminar inscripción por ID
-export const deleteById = (cod_e: number, cod_a: number, cod_p: number, callback: Function) => {
-    const queryString = 'DELETE FROM inscribe WHERE cod_e = ? AND cod_a = ? AND cod_p = ?';
+/*
+ //Eliminar inscripción por ID
+ export const deleteById = (cod_e: number, cod_a: number, cod_p: number, callback: Function) => {
+     const queryString = 'DELETE FROM inscribe WHERE cod_e = ? AND cod_a = ? AND cod_p = ?';
 
-    db.query(queryString, [cod_e, cod_a, cod_p], (err, result) => {
-        if (err) return callback(err);
+     db.query(queryString, [cod_e, cod_a, cod_p], (err, result) => {
+         if (err) return callback(err);
 
-        if ((result as any).affectedRows === 0) {
-            return callback(new Error('Inscripción no encontrada'));
-        }
+         if ((result as any).affectedRows === 0) {
+             return callback(new Error('Inscripción no encontrada'));
+         }
 
-        callback(null, {
-            statusCode: 200,
-            message: 'Inscripción eliminada exitosamente'
-        });
-    });
-};
+         callback(null, {
+             statusCode: 200,
+             message: 'Inscripción eliminada exitosamente'
+         });
+     });
+ };
+*/
+

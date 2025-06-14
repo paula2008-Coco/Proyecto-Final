@@ -1,21 +1,131 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Universidad - Menú Principal</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Gestión Universitaria</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Gestión Universitaria</h1>
   <nav>
     <ul>
-      <li><a href="estudiantes.html">Estudiantes</a></li>
-      <li><a href="profesores.html">Profesores</a></li>
-      <li><a href="asignaturas.html">Asignaturas</a></li>
-      <li><a href="imparte.html">Asignaturas Impartidas</a></li>
-      <li><a href="inscribe.html">Inscripciones y Notas</a></li>
+      <li><a href="#" onclick="mostrar('asignaturas')">Asignaturas</a></li>
+      <li><a href="#" onclick="mostrar('profesores')">Profesores</a></li>
+      <li><a href="#" onclick="mostrar('estudiantes')">Estudiantes</a></li>
+      <li><a href="#" onclick="mostrar('imparte')">Imparte</a></li>
+      <li><a href="#" onclick="mostrar('inscribe')">Inscribe</a></li>
     </ul>
   </nav>
+  <main>
+    <section id="asignaturas" class="seccion">
+      <h2>Asignaturas</h2>
+      <form id="asignaturaForm">
+        <input type="number" id="cod_a" placeholder="Código" required>
+        <input type="text" id="nom_a" placeholder="Nombre" required>
+        <input type="number" id="credit_a" placeholder="Créditos" required>
+        <input type="number" id="inh_a" placeholder="Inhabilitado (0/1)" required>
+        <button type="submit">Guardar</button>
+      </form>
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th><th>Nombre</th><th>Créditos</th><th>Inh.</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaAsignaturas"></tbody>
+      </table>
+    </section>
+    <section id="profesores" class="seccion" style="display:none">
+      <h2>Profesores</h2>
+      <form id="profesorForm">
+        <input type="number" id="cod_p" placeholder="Código" required>
+        <input type="text" id="nom_p" placeholder="Nombre" required>
+        <input type="text" id="profesion_p" placeholder="Profesión" required>
+        <input type="text" id="dir_p" placeholder="Dirección" required>
+        <input type="text" id="tel_p" placeholder="Teléfono" required>
+        <input type="date" id="fech_nac" placeholder="Fecha Nac." required>
+        <button type="submit">Guardar</button>
+      </form>
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th><th>Nombre</th><th>Profesión</th><th>Dirección</th><th>Teléfono</th><th>Nacimiento</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaProfesores"></tbody>
+      </table>
+    </section>
+    <section id="estudiantes" class="seccion" style="display:none">
+      <h2>Estudiantes</h2>
+      <form id="estudianteForm">
+        <input type="number" id="cod_e" placeholder="Código" required>
+        <input type="text" id="nom_e" placeholder="Nombre" required>
+        <input type="text" id="dir_e" placeholder="Dirección" required>
+        <input type="text" id="tel_e" placeholder="Teléfono" required>
+        <input type="date" id="fech_nac" placeholder="Fecha Nac." required>
+        <button type="submit">Guardar</button>
+      </form>
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th><th>Nombre</th><th>Dirección</th><th>Teléfono</th><th>Nacimiento</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaEstudiantes"></tbody>
+      </table>
+    </section>
+    <section id="imparte" class="seccion" style="display:none">
+      <h2>Imparte</h2>
+      <form id="imparteForm">
+        <input type="number" id="id_p" placeholder="ID Profesor" required>
+        <input type="number" id="cod_a" placeholder="Código Asignatura" required>
+        <input type="text" id="grupo" placeholder="Grupo" required>
+        <input type="text" id="horario" placeholder="Horario" required>
+        <button type="submit">Guardar</button>
+      </form>
+      <table>
+        <thead>
+          <tr>
+            <th>ID Profesor</th><th>Código Asignatura</th><th>Grupo</th><th>Horario</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaImparte"></tbody>
+      </table>
+    </section>
+    <section id="inscribe" class="seccion" style="display:none">
+      <h2>Inscribe</h2>
+      <form id="inscribeForm">
+        <input type="number" id="cod_e" placeholder="Código Estudiante" required>
+        <input type="number" id="cod_p" placeholder="Código Profesor" required>
+        <input type="number" id="cod_a" placeholder="Código Asignatura" required>
+        <input type="text" id="grupo" placeholder="Grupo" required>
+        <input type="number" id="n1" placeholder="Nota 1">
+        <input type="number" id="n2" placeholder="Nota 2">
+        <input type="number" id="n3" placeholder="Nota 3">
+        <button type="submit">Guardar</button>
+      </form>
+      <table>
+        <thead>
+          <tr>
+            <th>Código Estudiante</th><th>Código Profesor</th><th>Código Asignatura</th><th>Grupo</th><th>N1</th><th>N2</th><th>N3</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaInscribe"></tbody>
+      </table>
+    </section>
+  </main>
+  <script>
+    function mostrar(id) {
+      document.querySelectorAll('.seccion').forEach(s => s.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+    // Mostrar la primera sección por defecto
+    mostrar('asignaturas');
+  </script>
+  <script src="js/asignaturas.js"></script>
+  <script src="js/profesores.js"></script>
+  <script src="js/estudiantes.js"></script>
+  <script src="js/imparte.js"></script>
+  <script src="js/inscribe.js"></script>
 </body>
 </html>

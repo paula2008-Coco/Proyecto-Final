@@ -45,6 +45,7 @@ const estudianteRouter_1 = require("./routes/estudianteRouter");
 const profesorRouter_1 = require("./routes/profesorRouter");
 const asignaturaRouter_1 = require("./routes/asignaturaRouter");
 const imparteRouter_1 = require("./routes/imparteRouter");
+const inscribeRouter_1 = require("./routes/inscribeRouter");
 const app = (0, express_1.default)();
 const PORT = parseInt(process.env.PORT || '3000');
 const HOST = process.env.HOST || 'localhost';
@@ -61,6 +62,7 @@ app.use('/estudiante', estudianteRouter_1.estudianteRouter);
 app.use('/profesor', profesorRouter_1.profesorRouter);
 app.use('/asignatura', asignaturaRouter_1.asignaturaRouter);
 app.use('/imparte', imparteRouter_1.imparteRouter);
+app.use('/inscribe', inscribeRouter_1.inscribeRouter);
 // Ya no usamos db.connect() porque usas createPool() en db.ts
 // Manejo de rutas no encontradas
 app.use((req, res) => {

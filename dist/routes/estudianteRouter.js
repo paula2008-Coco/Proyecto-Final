@@ -42,10 +42,17 @@ const estudianteController = __importStar(require("../controllers/estudianteCont
 exports.estudianteRouter = express_1.default.Router();
 // Crear un nuevo estudiante
 exports.estudianteRouter.post('/', (req, res) => {
+    console.log('Body recibido en estudiante:', req.body);
+    // Convertir '' a null para fech_nac directamente en req.body
+    if (req.body.fech_nac === '') {
+        req.body.fech_nac = null;
+    }
     const nuevoEstudiante = req.body;
     estudianteController.create(nuevoEstudiante, (err, result) => {
-        if (err)
+        if (err) {
+            console.error('Error al guardar estudiante:', err);
             return res.status(500).json({ error: err.message });
+        }
         res.status(result.statusCode).json(result);
     });
 });
